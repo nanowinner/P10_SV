@@ -68,7 +68,7 @@ def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_f
 
         if shuffle:
             selected_files = random.sample(np_file_list, speaker_num)  # select random N speakers
-        else:
+        else:  # possible also for validation
             selected_files = np_file_list[:speaker_num]                # select first N speakers
 
         utter_batch = []
@@ -84,9 +84,9 @@ def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_f
 
         if config.train:
             frame_slice = np.random.randint(140,181)          # for train session, random slicing of input batch
-            utter_batch = utter_batch[:,:,:frame_slice]
+            utter_batch = utter_batch[:,:,:frame_slice]       # from [batch(NM), n_mels, frames], leave the first two intact, but from frames, start from 0 and end at frame_slice
         else:
-            utter_batch = utter_batch[:,:,:160]               # for train session, fixed length slicing of input batch
+            utter_batch = utter_batch[:,:,:160]               # for test session, fixed length slicing of input batch
 
     utter_batch = np.transpose(utter_batch, axes=(2,0,1))     # transpose [frames, batch, n_mels]
 
@@ -147,6 +147,10 @@ def loss_cal(S, type="softmax", N=config.N, M=config.M):
     """
     S_correct = tf.concat([S[i*M:(i+1)*M, i:(i+1)] for i in range(N)], axis=0)  # colored entries in Fig.1
 
+    print("=====debug_by_me=====")
+    print(S_correct)
+    print("=====debug_by_me=====")
+
     if type == "softmax":
         total = -tf.reduce_sum(S_correct-tf.log(tf.reduce_sum(tf.exp(S), axis=1, keep_dims=True) + 1e-6))
     elif type == "contrast":
@@ -180,7 +184,7 @@ if __name__ == "__main__":
     random_batch()
     w= tf.constant([1], dtype= tf.float32)
     b= tf.constant([0], dtype= tf.float32)
-    embedded = tf.constant([[0,1,0],[0,0,1], [0,1,0], [0,1,0], [1,0,0], [1,0,0]], dtype= tf.float32)
+    embedded = tf.constant([[0,1,0], [0,0,1], [0,1,0], [0,1,0], [1,0,0], [1,0,0]], dtype= tf.float32)
     sim_matrix = similarity(embedded,w,b,3,2,3)
     loss1 = loss_cal(sim_matrix, type="softmax",N=3,M=2)
     loss2 = loss_cal(sim_matrix, type="contrast",N=3,M=2)
