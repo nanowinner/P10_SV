@@ -21,15 +21,15 @@ def str2bool(v):
 
 # Data Preprocess Arguments
 data_arg = parser.add_argument_group('Data')
-data_arg.add_argument('--noise_path', type=str, default='./noise', help="noise dataset directory")
+# data_arg.add_argument('--noise_path', type=str, default='./noise', help="noise dataset directory")
 data_arg.add_argument('--train_path', type=str, default='./train_tisv', help="train dataset directory")
 data_arg.add_argument('--test_path', type=str, default='./test_tisv', help="test dataset directory")
-data_arg.add_argument('--tdsv', type=str2bool, default=False, help="text dependent or not")
+# data_arg.add_argument('--tdsv', type=str2bool, default=False, help="text dependent or not")
 data_arg.add_argument('--sr', type=int, default=8000, help="sampling rate")
 data_arg.add_argument('--nfft', type=int, default=512, help="fft kernel size")
 data_arg.add_argument('--window', type=int, default=0.025, help="window length (ms)")
 data_arg.add_argument('--hop', type=int, default=0.01, help="hop size (ms)")
-data_arg.add_argument('--tdsv_frame', type=int, default=80, help="frame number of utterance of tdsv")
+# data_arg.add_argument('--tdsv_frame', type=int, default=80, help="frame number of utterance of tdsv")
 data_arg.add_argument('--tisv_frame', type=int, default=180, help="max frame number of utterances of tdsv")
 
 # Model Parameters
@@ -46,7 +46,7 @@ train_arg = parser.add_argument_group('Training')
 train_arg.add_argument('--train', type=str2bool, default=False, help="train session or not(test session)")
 train_arg.add_argument('--N', type=int, default=4, help="number of speakers of batch")
 train_arg.add_argument('--M', type=int, default=5, help="number of utterances per speaker")
-train_arg.add_argument('--noise_filenum', type=int, default=16, help="how many noise files will you use")
+# train_arg.add_argument('--noise_filenum', type=int, default=16, help="how many noise files will you use")
 train_arg.add_argument('--loss', type=str, default='softmax', help="loss type (softmax or contrast)")
 train_arg.add_argument('--optim', type=str.lower, default='sgd', help="optimizer type")
 train_arg.add_argument('--lr', type=float, default=1e-2, help="learning rate")

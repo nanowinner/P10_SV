@@ -269,12 +269,8 @@ def test(path):
 
         # return similarity matrix after enrollment and test set
         time1 = time.time() # for check inference time
-        if config.tdsv:
-            S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False, noise_filenum=1),
-                                                       test: random_batch(shuffle=False, noise_filenum=2)})
-        else:
-            S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
-                                                       test: random_batch(shuffle=False, utter_start=config.M)})
+        S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
+                                                   test: random_batch(shuffle=False, utter_start=config.M)})
         S = S.reshape([config.N, config.M, -1])
         time2 = time.time()
 
@@ -308,5 +304,3 @@ def test(path):
                 EER_FRR = FRR
 
         print("\nEER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)"%(EER,EER_thres,EER_FAR,EER_FRR))
-
-

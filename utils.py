@@ -9,14 +9,6 @@ from configuration import get_config
 config = get_config()
 
 
-def keyword_spot(spec):
-    """ Keyword detection for data preprocess
-        For VTCK data I truncate last 80 frames of trimmed audio - "Call Stella"
-    :return: 80 frames spectrogram
-    """
-    return spec[:, -config.tdsv_frame:]
-
-
 def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_filenum=None, utter_start=0, forceValidation=False):
     """ Generate 1 batch.
         For TI-SV, random frame length is applied to each batch of utterances (140-180 frames)
