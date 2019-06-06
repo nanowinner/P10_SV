@@ -2,46 +2,42 @@ import tensorflow as tf
 import numpy as np
 import os
 import time
+import matplotlib.pyplot as plt
 from utils import random_batch, normalize, similarity, loss_cal, optim
 from configuration import get_config
 
-from tensorflow.contrib import rnn
-
 config = get_config()
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'  # Remove comment to run on CPU
+# Uncomment to run on CPU
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+
 
 def train(path):
     tf.reset_default_graph()    # reset graph
 
-    # draw graph
-    batch = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # input batch (time x batch x n_mel)
+    # Draw train graph
+    train_batch = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # input batch (time x batch x n_mel)
     lr = tf.placeholder(dtype=tf.float32)  # learning rate
-    lr_summ = tf.summary.scalar(name='My_LR', tensor=lr)  # TensorBoard var declaration
+
     global_step = tf.Variable(0, name='global_step', trainable=False)
     w = tf.get_variable("w", initializer=np.array([10], dtype=np.float32))
     b = tf.get_variable("b", initializer=np.array([-5], dtype=np.float32))
 
-    # embedding lstm (3-layer default)
-    with tf.variable_scope("lstm"):
+    # Embedding LSTM (3-layer default)
+    with tf.variable_scope("lstm", reuse=None):
         lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
         print(config.num_layer)
         lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # define lstm op and variables
-        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
+        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=train_batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
         embedded = outputs[-1]                            # the last ouput is the embedded d-vector
         embedded = normalize(embedded)                    # normalize
     print("embedded size: ", embedded.shape)
-
-
-
 
     # Define loss
     sim_matrix = similarity(embedded, w, b)
     print("similarity matrix size: ", sim_matrix.shape)
     loss = loss_cal(sim_matrix, type=config.loss)
-    # decided to have the TB log below
-    # loss_summ = tf.summary.scalar('loss_NEW', loss)
 
-    # optimizer operation
+    # Optimizer operation
     trainable_vars = tf.trainable_variables()                # get variable list
     optimizer = optim(lr)                                    # get optimizer (type is determined by configuration)
     grads, vars = zip(*optimizer.compute_gradients(loss))    # compute gradients of variables with respect to loss
@@ -49,24 +45,29 @@ def train(path):
     grads_rescale = [0.01*grad for grad in grads_clip[:2]] + grads_clip[2:]   # smaller gradient scale for w, b
     train_op = optimizer.apply_gradients(zip(grads_rescale, vars), global_step=global_step)  # gradient update operation
 
-    # check variables memory
+    # Check variables memory
     variable_count = np.sum(np.array([np.prod(np.array(v.get_shape().as_list())) for v in trainable_vars]))
     print("total variables :", variable_count)
 
-    # Record loss for TensorBoard
+    # TensorBoard vars declaration
+    lr_summ = tf.summary.scalar(name='My_LR', tensor=lr)
     loss_summary = tf.summary.scalar("loss_ORIG", loss)
     w_summary = tf.summary.histogram('My_Weights', w)
     b_summary = tf.summary.histogram('My_Bias', b)
-    merged = tf.summary.merge_all()
-    saver = tf.train.Saver()
+    merged = tf.summary.merge_all()                 # merge all TB vars into one
+    saver = tf.train.Saver(max_to_keep=40)          # create a saver, max_to_keep=40 w/ every 2500 steps = around 100000
 
-    # training session
+    # Training session
     with tf.Session() as sess:
         tf.global_variables_initializer().run()
-        os.makedirs(os.path.join(path, "Check_Point"), exist_ok=True)  # make folder to save model
-        os.makedirs(os.path.join(path, "logs"), exist_ok=True)          # make folder to save log
 
-        # Block to make folders of runs for TensorBoard
+        os.makedirs(os.path.join(path, "Check_Point"), exist_ok=True)   # make folder to save model
+        os.makedirs(os.path.join(path, "logs"), exist_ok=True)          # make folder to save TensorBoard logs
+        os.makedirs("./Plots/", exist_ok=True)                          # make folder to save all plots and .txt logs
+        os.makedirs("./Plots/" + path[11:], exist_ok=True)              # makes the subdirs for individual plots
+        log_path = "./Plots/" + path[11:] + "/" + path[11:] + ".txt"    # declares .txt log files naming convention
+
+        # Block of code to make folders of runs for TensorBoard visualization
         logspath = os.path.join(path, "logs")
         num_previous_runs = os.listdir('./tisv_model/logs')
         if len(num_previous_runs) == 0:
@@ -77,104 +78,141 @@ def train(path):
         writer = tf.summary.FileWriter(os.path.join(logspath, curr_logdir), sess.graph)  # Define writer for TensorBoard
         # END of Block
 
-        epoch = 0
-        lr_factor = 1   # lr decay factor ( 1/2 per 10000 iteration)
-        loss_acc = 0    # accumulated loss ( for running average of loss)
+        # epoch = 0      # not used
+        lr_factor = 1    # LR decay factor (1/2 per 10000 iteration)
+        loss_acc = 0     # accumulated loss (for calculating average of loss)
 
+        # declares lists for figure creation
+        EER_list = []         # collects the EER results every 100 steps for plotting
+        train_loss_list = []  # collects the training loss results every 100 steps for plotting
+        # LR_decay_list = []  # not used
 
         for iter in range(config.iteration):
             # run forward and backward propagation and update parameters
             _, loss_cur, summary = sess.run([train_op, loss, merged],
-                                  feed_dict={batch: random_batch(), lr: config.lr*lr_factor})
+                                  feed_dict={train_batch: random_batch(), lr: config.lr*lr_factor})
 
             loss_acc += loss_cur    # accumulated loss for each 100 iteration
 
+            # write train_loss to TensorBoard
             if iter % 10 == 0:
-                writer.add_summary(summary, iter)   # write at tensorboard
-                print("==============VALIDATION==============")
-                verif(path, sess)
-                print("==============VALIDATION==============")
+                writer.add_summary(summary, iter)
+            # perform validation
             if (iter+1) % 100 == 0:
-                print("(iter : %d) loss: %.4f" % ((iter+1),loss_acc/100))
+                # print("(iter : %d) loss: %.4f" % ((iter+1),loss_acc/100))
+                # print("==============VALIDATION START!============")
+
+                # Draw validation graph
+                enroll = tf.placeholder(shape=[None, config.N * config.M, 40],
+                                        dtype=tf.float32)  # enrollment batch (time x batch x n_mel)
+                valid = tf.placeholder(shape=[None, config.N * config.M, 40],
+                                       dtype=tf.float32)  # validation batch (time x batch x n_mel)
+                val_batch = tf.concat([enroll, valid], axis=1)
+
+                # Embedding LSTM (3-layer default)
+                with tf.variable_scope("lstm", reuse=tf.AUTO_REUSE):
+                    lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in
+                                  range(config.num_layer)]
+                    lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)  # make lstm op and variables
+                    outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=val_batch, dtype=tf.float32,
+                                                   time_major=True)  # for TI-VS must use dynamic rnn
+                    embedded = outputs[-1]  # the last ouput is the embedded d-vector
+                    embedded = normalize(embedded)  # normalize
+                # print("embedded size: ", embedded.shape)
+
+                # enrollment embedded vectors (speaker model)
+                enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N * config.M, :],
+                                                                   shape=[config.N, config.M, -1]), axis=1))
+                # validation embedded vectors
+                valid_embed = embedded[config.N * config.M:, :]
+                similarity_matrix = similarity(embedded=valid_embed, w=1., b=0., center=enroll_embed)
+
+                # print("test file path : ", config.test_path)
+
+                # Return similarity matrix (SM) after enrollment and validation
+                time1 = time.time()  # for check inference time
+                S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False, forceValidation=True),
+                                                           valid: random_batch(shuffle=False, utter_start=config.M, forceValidation=True)})
+                S = S.reshape([config.N, config.M, -1])
+                time2 = time.time()
+
+                np.set_printoptions(precision=4)
+                # print("inference time for %d utterences : %0.2fs" % (2 * config.M * config.N, time2 - time1))
+                # print(S)  # print similarity matrix
+
+                # calculating EER
+                diff = 1
+                EER = 0
+                EER_thres = 0
+                EER_FAR = 0
+                EER_FRR = 0
+
+                # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
+                for thres in [0.01 * i + 0.5 for i in range(50)]:
+                    S_thres = S > thres
+
+                    # False acceptance ratio = false acceptance / mismatched population (enroll speaker != validation speaker)
+                    FAR = sum([np.sum(S_thres[i]) - np.sum(S_thres[i, :, i]) for i in range(config.N)]) / (
+                            config.N - 1) / config.M / config.N
+
+                    # False reject ratio = false reject / matched population (enroll speaker = validation speaker)
+                    FRR = sum([config.M - np.sum(S_thres[i][:, i]) for i in range(config.N)]) / config.M / config.N
+
+                    # Save threshold when FAR = FRR (=EER)
+                    if diff > abs(FAR - FRR):
+                        diff = abs(FAR - FRR)
+                        EER = (FAR + FRR) / 2
+                        EER_thres = thres
+                        EER_FAR = FAR
+                        EER_FRR = FRR
+
+                print("\n(iter : %d) loss: %.4f || EER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) || inference time for %d utterences: %0.2fs" % ((iter + 1), loss_acc / 100, EER, EER_thres, EER_FAR, EER_FRR, 2 * config.M * config.N, time2 - time1))
+                EER_list.append(EER)
+                # print("==============VALIDATION END!==============")
+                train_loss_list.append(loss_acc/100)
+
+                # save figures
+                if (iter+1) % 500 == 0:
+                    plt.ioff()
+                    fig_EER = plt.figure()
+                    iter_list = [(i + 1) * 100 for i in range(len(EER_list))]
+                    plt.plot(iter_list, EER_list, label="EER")
+                    plt.xlabel("Steps")
+                    plt.ylabel("EER")
+                    plt.title("Equal error rate progress")
+                    plt.grid(True)
+                    plot_path = "./Plots/" + path[11:] + "/" + path[11:] + ".png"
+                    print("Saving plot as: %s" % plot_path)
+                    plt.savefig(plot_path)
+                    plt.close(fig_EER)
+
+                    plt.ioff()
+                    fig_LOSS = plt.figure()
+                    iter_list = [(i + 1) * 100 for i in range(len(EER_list))]
+                    plt.plot(iter_list, train_loss_list, color="orange", label="train_loss")
+                    plt.xlabel("Steps")
+                    plt.ylabel("Training loss")
+                    plt.title("Training progress")
+                    plt.grid(True)
+                    plot_path = "./Plots/" + path[11:] + "/" + path[11:] + "_LOSS.png"
+                    print("Saving plot as: %s" % plot_path)
+                    plt.savefig(plot_path)
+                    plt.close(fig_LOSS)
+
+                # Every 100 iterations, save a log of training progress
+                with open(log_path, "a") as file:
+                    file.write(str(iter+1) + "," + str(loss_acc/100) + "," +
+                               str(EER) + "," + str(EER_thres) + "," + str(EER_FAR) + "," + str(EER_FRR) + "\n")
+
                 loss_acc = 0                        # reset accumulated loss
-
-            if (iter+1) % 2500 == 0:
+            # decay learning rate
+            if (iter+1) % 5000 == 0:
                 lr_factor /= 2                      # lr decay
-                print("learning rate is decayed! current lr : ", config.lr*lr_factor)
-            if (iter+1) % 10000 == 0:
-                saver.save(sess, os.path.join(path, "./Check_Point/model.ckpt"), global_step=iter//10000)
-                print("model is saved!")
-
-
-def verif(path, sess):
-    # tf.reset_default_graph()
-
-    # draw graph
-    enroll = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32) # enrollment batch (time x batch x n_mel)
-    verif = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # verification batch (time x batch x n_mel)
-    batch = tf.concat([enroll, verif], axis=1)
-
-    # embedding lstm (3-layer default)
-    with tf.variable_scope("lstm_val"):
-        lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
-        lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # make lstm op and variables
-        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
-        embedded = outputs[-1]                            # the last ouput is the embedded d-vector
-        embedded = normalize(embedded)                    # normalize
-
-    print("embedded size: ", embedded.shape)
-
-    # enrollment embedded vectors (speaker model)
-    enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N*config.M, :], shape= [config.N, config.M, -1]), axis=1))
-    # verification embedded vectors
-    verif_embed = embedded[config.N*config.M:, :]
-
-    similarity_matrix = similarity(embedded=verif_embed, w=1., b=0., center=enroll_embed)
-
-    print("test file path : ", config.test_path)
-
-    # return similarity matrix after enrollment and verification
-    time1 = time.time() # for check inference time
-    if config.tdsv:
-        S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False, noise_filenum=1),
-                                                   verif: random_batch(shuffle=False, noise_filenum=2)})
-    else:
-        S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
-                                                   verif: random_batch(shuffle=False, utter_start=config.M)})
-    S = S.reshape([config.N, config.M, -1])
-    time2 = time.time()
-
-    np.set_printoptions(precision=4)
-    print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
-    print(S)    # print similarity matrix
-
-    # calculating EER
-    diff = 1
-    EER = 0
-    EER_thres = 0
-    EER_FAR = 0
-    EER_FRR = 0
-
-    # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
-    for thres in [0.01*i+0.5 for i in range(50)]:
-        S_thres = S>thres
-
-        # False acceptance ratio = false acceptance / mismatched population (enroll speaker != verification speaker)
-        FAR = sum([np.sum(S_thres[i])-np.sum(S_thres[i,:,i]) for i in range(config.N)])/(config.N-1)/config.M/config.N
-
-        # False reject ratio = false reject / matched population (enroll speaker = verification speaker)
-        FRR = sum([config.M-np.sum(S_thres[i][:,i]) for i in range(config.N)])/config.M/config.N
-
-        # Save threshold when FAR = FRR (=EER)
-        if diff > abs(FAR-FRR):
-            diff = abs(FAR-FRR)
-            EER = (FAR+FRR)/2
-            EER_thres = thres
-            EER_FAR = FAR
-            EER_FRR = FRR
-
-    print("\nEER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)"%(EER,EER_thres,EER_FAR,EER_FRR))
-
+                print("Learning Rate (LR) decayed! Current LR: ", config.lr*lr_factor)
+            # save model checkpoint
+            if (iter+1) % 5000 == 0:
+                saver.save(sess, os.path.join(path, "./Check_Point/model.ckpt"), global_step=iter//5000)  # naming val
+                print("Model checkpoint saved!")
 
 
 # Test Session
@@ -183,8 +221,8 @@ def test(path):
 
     # draw graph
     enroll = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32) # enrollment batch (time x batch x n_mel)
-    verif = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # verification batch (time x batch x n_mel)
-    batch = tf.concat([enroll, verif], axis=1)
+    test = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # test batch (time x batch x n_mel)
+    batch = tf.concat([enroll, test], axis=1)
 
     # embedding lstm (3-layer default)
     with tf.variable_scope("lstm"):
@@ -196,12 +234,17 @@ def test(path):
 
     print("embedded size: ", embedded.shape)
 
+    # check variables memory
+    trainable_vars = tf.trainable_variables()
+    variable_count = np.sum(np.array([np.prod(np.array(v.get_shape().as_list())) for v in trainable_vars]))
+    print("total variables :", variable_count)
+
     # enrollment embedded vectors (speaker model)
     enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N*config.M, :], shape= [config.N, config.M, -1]), axis=1))
-    # verification embedded vectors
-    verif_embed = embedded[config.N*config.M:, :]
+    # test embedded vectors
+    test_embed = embedded[config.N*config.M:, :]
 
-    similarity_matrix = similarity(embedded=verif_embed, w=1., b=0., center=enroll_embed)
+    similarity_matrix = similarity(embedded=test_embed, w=1., b=0., center=enroll_embed)
 
     saver = tf.train.Saver(var_list=tf.global_variables())
     with tf.Session() as sess:
@@ -224,14 +267,14 @@ def test(path):
 
         print("test file path : ", config.test_path)
 
-        # return similarity matrix after enrollment and verification
+        # return similarity matrix after enrollment and test set
         time1 = time.time() # for check inference time
         if config.tdsv:
             S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False, noise_filenum=1),
-                                                       verif: random_batch(shuffle=False, noise_filenum=2)})
+                                                       test: random_batch(shuffle=False, noise_filenum=2)})
         else:
             S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
-                                                       verif: random_batch(shuffle=False, utter_start=config.M)})
+                                                       test: random_batch(shuffle=False, utter_start=config.M)})
         S = S.reshape([config.N, config.M, -1])
         time2 = time.time()
 
@@ -250,10 +293,10 @@ def test(path):
         for thres in [0.01*i+0.5 for i in range(50)]:
             S_thres = S>thres
 
-            # False acceptance ratio = false acceptance / mismatched population (enroll speaker != verification speaker)
+            # False acceptance ratio = false acceptance / mismatched population (enroll speaker != test speaker)
             FAR = sum([np.sum(S_thres[i])-np.sum(S_thres[i,:,i]) for i in range(config.N)])/(config.N-1)/config.M/config.N
 
-            # False reject ratio = false reject / matched population (enroll speaker = verification speaker)
+            # False reject ratio = false reject / matched population (enroll speaker = test speaker)
             FRR = sum([config.M-np.sum(S_thres[i][:,i]) for i in range(config.N)])/config.M/config.N
 
             # Save threshold when FAR = FRR (=EER)

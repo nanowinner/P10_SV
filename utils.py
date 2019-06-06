@@ -17,9 +17,8 @@ def keyword_spot(spec):
     return spec[:, -config.tdsv_frame:]
 
 
-def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_filenum=None, utter_start=0):
+def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_filenum=None, utter_start=0, forceValidation=False):
     """ Generate 1 batch.
-        For TD-SV, noise is added to each utterance.
         For TI-SV, random frame length is applied to each batch of utterances (140-180 frames)
         speaker_num : number of speaker of each batch
         utter_num : number of utterance per speaker of each batch
@@ -29,64 +28,40 @@ def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_f
     :return: 1 random numpy batch (frames x batch(NM) x n_mels)
     """
 
+    if forceValidation == True:
+        config.train = False
+
     # data path
     if config.train:
         path = config.train_path
     else:
         path = config.test_path
 
-    # TD-SV
-    if config.tdsv:
-        np_file = os.listdir(path)[0]
-        path = os.path.join(path, np_file)  # path of numpy file
-        utters = np.load(path)              # load text specific utterance spectrogram
-        if shuffle:
-            np.random.shuffle(utters)       # shuffle for random sampling
-        utters = utters[:speaker_num]       # select N speaker
-
-        # concat utterances (M utters per each speaker)
-        # ex) M=2, N=2 => utter_batch = [speaker1, speaker1, speaker2, speaker2]
-        utter_batch = np.concatenate([np.concatenate([utters[i]]*utter_num, axis=1) for i in range(speaker_num)], axis=1)
-
-        if noise_filenum is None:
-            noise_filenum = np.random.randint(0, config.noise_filenum)                    # random selection of noise
-        noise = np.load(os.path.join(config.noise_path, "noise_%d.npy"%noise_filenum))  # load noise
-
-        utter_batch += noise[:,:utter_batch.shape[1]]   # add noise to utterance
-
-        utter_batch = np.abs(utter_batch) ** 2
-        mel_basis = librosa.filters.mel(sr=config.sr, n_fft=config.nfft, n_mels=40)
-        utter_batch = np.log10(np.dot(mel_basis, utter_batch) + 1e-6)          # log mel spectrogram of utterances
-
-        utter_batch = np.array([utter_batch[:,config.tdsv_frame*i:config.tdsv_frame*(i+1)]
-                                for i in range(speaker_num*utter_num)])        # reshape [batch, n_mels, frames]
-
     # TI-SV
-    else:
-        np_file_list = os.listdir(path)
-        total_speaker = len(np_file_list)
+    np_file_list = os.listdir(path)
+    total_speaker = len(np_file_list)
 
+    if shuffle:
+        selected_files = random.sample(np_file_list, speaker_num)  # select random N speakers
+    else:  # possible also for validation
+        selected_files = np_file_list[:speaker_num]                # select first N speakers
+
+    utter_batch = []
+    for file in selected_files:
+        utters = np.load(os.path.join(path, file))        # load utterance spectrogram of selected speaker
         if shuffle:
-            selected_files = random.sample(np_file_list, speaker_num)  # select random N speakers
-        else:  # possible also for validation
-            selected_files = np_file_list[:speaker_num]                # select first N speakers
-
-        utter_batch = []
-        for file in selected_files:
-            utters = np.load(os.path.join(path, file))        # load utterance spectrogram of selected speaker
-            if shuffle:
-                utter_index = np.random.randint(0, utters.shape[0], utter_num)   # select M utterances per speaker
-                utter_batch.append(utters[utter_index])       # each speakers utterance [M, n_mels, frames] is appended
-            else:
-                utter_batch.append(utters[utter_start: utter_start+utter_num])
-
-        utter_batch = np.concatenate(utter_batch, axis=0)     # utterance batch [batch(NM), n_mels, frames]
-
-        if config.train:
-            frame_slice = np.random.randint(140,181)          # for train session, random slicing of input batch
-            utter_batch = utter_batch[:,:,:frame_slice]       # from [batch(NM), n_mels, frames], leave the first two intact, but from frames, start from 0 and end at frame_slice
+            utter_index = np.random.randint(0, utters.shape[0], utter_num)   # select M utterances per speaker
+            utter_batch.append(utters[utter_index])       # each speakers utterance [M, n_mels, frames] is appended
         else:
-            utter_batch = utter_batch[:,:,:160]               # for test session, fixed length slicing of input batch
+            utter_batch.append(utters[utter_start: utter_start+utter_num])
+
+    utter_batch = np.concatenate(utter_batch, axis=0)     # utterance batch [batch(NM), n_mels, frames]
+
+    if config.train:
+        frame_slice = np.random.randint(140,181)          # for train session, random slicing of input batch
+        utter_batch = utter_batch[:,:,:frame_slice]       # from [batch(NM), n_mels, frames], leave the first two intact, but from frames, start from 0 and end at frame_slice
+    else:
+        utter_batch = utter_batch[:,:,:160]               # for test session, fixed length slicing of input batch
 
     utter_batch = np.transpose(utter_batch, axes=(2,0,1))     # transpose [frames, batch, n_mels]
 
@@ -146,10 +121,6 @@ def loss_cal(S, type="softmax", N=config.N, M=config.M):
     :return: loss
     """
     S_correct = tf.concat([S[i*M:(i+1)*M, i:(i+1)] for i in range(N)], axis=0)  # colored entries in Fig.1
-
-    print("=====debug_by_me=====")
-    print(S_correct)
-    print("=====debug_by_me=====")
 
     if type == "softmax":
         total = -tf.reduce_sum(S_correct-tf.log(tf.reduce_sum(tf.exp(S), axis=1, keep_dims=True) + 1e-6))
