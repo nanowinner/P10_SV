@@ -9,7 +9,7 @@ from configuration import get_config
 config = get_config()
 
 
-def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, noise_filenum=None, utter_start=0, forceValidation=False):
+def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, utter_start=0, forceValidation=False):
     """ Generate 1 batch.
         For TI-SV, random frame length is applied to each batch of utterances (140-180 frames)
         speaker_num : number of speaker of each batch
