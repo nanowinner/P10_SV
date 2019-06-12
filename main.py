@@ -1,6 +1,6 @@
 import tensorflow as tf
 import os
-from model import train, test
+from model import train, test, averaged_test, test_entire_valid_set
 from configuration import get_config
 
 config = get_config()
@@ -16,6 +16,8 @@ if __name__ == "__main__":
     else:
         print("\nTest session")
         if os.path.isdir(config.model_path):
-            test(config.model_path)
+            # test(config.model_path)               # Original
+            # averaged_test(config.model_path)      # Random average
+            test_entire_valid_set(config.model_path)
         else:
             raise AssertionError("model path doesn't exist!")

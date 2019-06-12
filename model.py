@@ -3,7 +3,7 @@ import numpy as np
 import os
 import time
 import matplotlib.pyplot as plt
-from utils import random_batch, normalize, similarity, loss_cal, optim
+from utils import random_batch, normalize, similarity, loss_cal, optim, generate_valid_batches, batch_entire_valid_set
 from configuration import get_config
 
 config = get_config()
@@ -115,7 +115,7 @@ def train(path):
                                   range(config.num_layer)]
                     lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)  # make lstm op and variables
                     outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=val_batch, dtype=tf.float32,
-                                                   time_major=True)  # for TI-VS must use dynamic rnn
+                                                   time_major=True)  # for TI-SV must use dynamic rnn
                     embedded = outputs[-1]  # the last ouput is the embedded d-vector
                     embedded = normalize(embedded)  # normalize
                 # print("embedded size: ", embedded.shape)
@@ -131,8 +131,9 @@ def train(path):
 
                 # Return similarity matrix (SM) after enrollment and validation
                 time1 = time.time()  # for check inference time
-                S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False, forceValidation=True),
-                                                           valid: random_batch(shuffle=False, utter_start=config.M, forceValidation=True)})
+                enroll_batch, valid_batch = generate_valid_batches(config.N, config.M)
+                S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch,
+                                                           valid: valid_batch})
                 S = S.reshape([config.N, config.M, -1])
                 time2 = time.time()
 
@@ -304,3 +305,233 @@ def test(path):
                 EER_FRR = FRR
 
         print("\nEER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)"%(EER,EER_thres,EER_FAR,EER_FRR))
+
+
+# Averaged test of 100 EERs
+def averaged_test(path):
+    tf.reset_default_graph()
+
+    # draw graph
+    enroll = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32) # enrollment batch (time x batch x n_mel)
+    test = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # test batch (time x batch x n_mel)
+    batch = tf.concat([enroll, test], axis=1)
+
+    # embedding lstm (3-layer default)
+    with tf.variable_scope("lstm"):
+        lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
+        lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # make lstm op and variables
+        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
+        embedded = outputs[-1]                            # the last ouput is the embedded d-vector
+        embedded = normalize(embedded)                    # normalize
+
+    print("embedded size: ", embedded.shape)
+
+    # check variables memory
+    trainable_vars = tf.trainable_variables()
+    variable_count = np.sum(np.array([np.prod(np.array(v.get_shape().as_list())) for v in trainable_vars]))
+    print("total variables :", variable_count)
+
+    # enrollment embedded vectors (speaker model)
+    enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N*config.M, :], shape= [config.N, config.M, -1]), axis=1))
+    # test embedded vectors
+    test_embed = embedded[config.N*config.M:, :]
+
+    similarity_matrix = similarity(embedded=test_embed, w=1., b=0., center=enroll_embed)
+
+    saver = tf.train.Saver(var_list=tf.global_variables())
+    with tf.Session() as sess:
+        tf.global_variables_initializer().run()
+
+        # load model
+        print("model path :", path)
+        ckpt = tf.train.get_checkpoint_state(checkpoint_dir=os.path.join(path, "Check_Point"))
+        ckpt_list = ckpt.all_model_checkpoint_paths
+        loaded = 0
+        for model in ckpt_list:
+            if config.model_num == int(model.split('-')[-1]):  # find ckpt file which matches configuration model number
+                print("ckpt file is loaded !", model)
+                loaded = 1
+                saver.restore(sess, model)  # restore variables from selected ckpt file
+                break
+
+        if loaded == 0:
+            raise AssertionError("ckpt file does not exist! Check config.model_num or config.model_path.")
+
+        # print("test file path : ", config.test_path)
+
+        # return similarity matrix after enrollment and test set
+        time1 = time.time() # for check inference time
+
+        all_EER = []
+        all_thres = []
+        all_FAR = []
+        all_FRR = []
+
+        for i in range(100):
+
+            # S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
+            #                                            test: random_batch(shuffle=False, utter_start=config.M)})
+            enroll_batch, valid_batch = generate_valid_batches(config.N, config.M)
+            S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch, test: valid_batch})
+
+            S = S.reshape([config.N, config.M, -1])
+            time2 = time.time()
+
+            np.set_printoptions(precision=4)
+            # print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
+            # print(S)    # print similarity matrix
+
+            # calculating EER
+            diff = 1
+            EER = 0
+            EER_thres = 0
+            EER_FAR = 0
+            EER_FRR = 0
+
+            # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
+            for thres in [0.01*i+0.5 for i in range(50)]:
+                S_thres = S>thres
+
+                # False acceptance ratio = false acceptance / mismatched population (enroll speaker != test speaker)
+                FAR = sum([np.sum(S_thres[i])-np.sum(S_thres[i,:,i]) for i in range(config.N)])/(config.N-1)/config.M/config.N
+
+                # False reject ratio = false reject / matched population (enroll speaker = test speaker)
+                FRR = sum([config.M-np.sum(S_thres[i][:,i]) for i in range(config.N)])/config.M/config.N
+
+                # Save threshold when FAR = FRR (=EER)
+                if diff > abs(FAR-FRR):
+                    diff = abs(FAR-FRR)
+                    EER = (FAR+FRR)/2
+                    EER_thres = thres
+                    EER_FAR = FAR
+                    EER_FRR = FRR
+
+            all_EER.append(EER)
+            all_thres.append(EER_thres)
+            all_FAR.append(EER_FAR)
+            all_FRR.append(EER_FRR)
+            print("\nEER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % ((i+1),EER,EER_thres,EER_FAR,EER_FRR))
+
+        average_scores = [sum(all_EER) / len(all_EER),
+                          sum(all_thres) / len(all_thres),
+                          sum(all_FAR) / len(all_FAR),
+                          sum(all_FRR) / len(all_FRR)]
+        print("Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % (average_scores[0], average_scores[1], average_scores[2], average_scores[3]) )
+
+
+# Verify over the entire test(valid) set
+def test_entire_valid_set(path):
+    tf.reset_default_graph()
+
+    # draw graph
+    enroll = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32) # enrollment batch (time x batch x n_mel)
+    test = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # test batch (time x batch x n_mel)
+    batch = tf.concat([enroll, test], axis=1)
+
+    # embedding lstm (3-layer default)
+    with tf.variable_scope("lstm"):
+        lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
+        lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # make lstm op and variables
+        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
+        embedded = outputs[-1]                            # the last ouput is the embedded d-vector
+        embedded = normalize(embedded)                    # normalize
+
+    print("embedded size: ", embedded.shape)
+
+    # check variables memory
+    trainable_vars = tf.trainable_variables()
+    variable_count = np.sum(np.array([np.prod(np.array(v.get_shape().as_list())) for v in trainable_vars]))
+    print("total variables :", variable_count)
+
+    # enrollment embedded vectors (speaker model)
+    enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N*config.M, :], shape= [config.N, config.M, -1]), axis=1))
+    # test embedded vectors
+    test_embed = embedded[config.N*config.M:, :]
+
+    similarity_matrix = similarity(embedded=test_embed, w=1., b=0., center=enroll_embed)
+
+    saver = tf.train.Saver(var_list=tf.global_variables())
+    with tf.Session() as sess:
+        tf.global_variables_initializer().run()
+
+        # load model
+        print("model path :", path)
+        ckpt = tf.train.get_checkpoint_state(checkpoint_dir=os.path.join(path, "Check_Point"))
+        ckpt_list = ckpt.all_model_checkpoint_paths
+        loaded = 0
+        for model in ckpt_list:
+            if config.model_num == int(model.split('-')[-1]):  # find ckpt file which matches configuration model number
+                print("ckpt file is loaded !", model)
+                loaded = 1
+                saver.restore(sess, model)  # restore variables from selected ckpt file
+                break
+
+        if loaded == 0:
+            raise AssertionError("ckpt file does not exist! Check config.model_num or config.model_path.")
+
+        # print("test file path : ", config.test_path)
+
+        # return similarity matrix after enrollment and test set
+        time1 = time.time() # for check inference time
+
+        all_EER = []
+        all_thres = []
+        all_FAR = []
+        all_FRR = []
+
+        # Determine amount of batches able to run with current N
+        total_speakers = len(os.listdir(config.test_path))
+        total_possible_batches = total_speakers // config.N
+
+        # Calc EER for max amount of possible batches
+        for i in range(total_possible_batches):
+
+            # S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
+            #                                            test: random_batch(shuffle=False, utter_start=config.M)})
+
+            enroll_batch, valid_batch = batch_entire_valid_set(start_speaker=i*config.N, end_speaker=(i*config.N)+config.N)
+            S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch, test: valid_batch})
+
+            S = S.reshape([config.N, config.M, -1])
+            time2 = time.time()
+
+            np.set_printoptions(precision=4)
+            # print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
+            # print(S)    # print similarity matrix
+
+            # calculating EER
+            diff = 1
+            EER = 0
+            EER_thres = 0
+            EER_FAR = 0
+            EER_FRR = 0
+
+            # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
+            for thres in [0.01*i+0.5 for i in range(50)]:
+                S_thres = S>thres
+
+                # False acceptance ratio = false acceptance / mismatched population (enroll speaker != test speaker)
+                FAR = sum([np.sum(S_thres[i])-np.sum(S_thres[i,:,i]) for i in range(config.N)])/(config.N-1)/config.M/config.N
+
+                # False reject ratio = false reject / matched population (enroll speaker = test speaker)
+                FRR = sum([config.M-np.sum(S_thres[i][:,i]) for i in range(config.N)])/config.M/config.N
+
+                # Save threshold when FAR = FRR (=EER)
+                if diff > abs(FAR-FRR):
+                    diff = abs(FAR-FRR)
+                    EER = (FAR+FRR)/2
+                    EER_thres = thres
+                    EER_FAR = FAR
+                    EER_FRR = FRR
+
+            all_EER.append(EER)
+            all_thres.append(EER_thres)
+            all_FAR.append(EER_FAR)
+            all_FRR.append(EER_FRR)
+            print("\nEER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % ((i+1),EER,EER_thres,EER_FAR,EER_FRR))
+
+        average_scores = [sum(all_EER) / len(all_EER),
+                          sum(all_thres) / len(all_thres),
+                          sum(all_FAR) / len(all_FAR),
+                          sum(all_FRR) / len(all_FRR)]
+        print("Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % (average_scores[0], average_scores[1], average_scores[2], average_scores[3]) )

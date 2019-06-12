@@ -9,6 +9,56 @@ from configuration import get_config
 config = get_config()
 
 
+def generate_valid_batches(speaker_num=config.N, utter_num=config.M):
+    """ EXPERIMENTAL IMPROVEMENT ON BATCH CREATION (def random_batch()) FOR VALIDATION
+        Generate 1 batch, where frame length of 160 is applied to each batch.
+        speaker_num : number of speaker of each batch
+        utter_num : number of utterance per speaker of each batch
+    :return: 1 random numpy batch (frames x batch(NM) x n_mels)
+    """
+    path = config.test_path
+
+    # Get folder and total number of speakers
+    np_file_list = os.listdir(path)
+    total_speaker = len(np_file_list)
+
+    # Select random N number of speakers
+    selected_files = random.sample(np_file_list, speaker_num)
+
+    enroll_utter_batch = []
+    valid_utter_batch = []
+    for file in selected_files:
+        utters = np.load(os.path.join(path, file))  # load utterance spectrogram of selected speaker
+
+        enroll_utter_index = np.random.randint(0, utters.shape[0], utter_num)  # select random M utterances per speaker
+        enroll_utter_batch.append(utters[enroll_utter_index])  # each speakers utterance [M, n_mels, frames] is appended
+
+        # Ensure valid_utter_batch has no utterances like enroll_utter_batch
+        while True:
+            valid_utter_index = np.random.randint(0, utters.shape[0],
+                                                  utter_num)  # select random M utterances per speaker
+            unique_list = True
+            for each_valid_utter in valid_utter_index:
+                if each_valid_utter in enroll_utter_index:
+                    unique_list = False
+                    break  # repeat to make a new batch of random M utterances
+
+            if unique_list:
+                break
+
+        valid_utter_batch.append(utters[valid_utter_index])  # each speakers utterance [M, n_mels, frames] is appended
+
+    enroll_utter_batch = np.concatenate(enroll_utter_batch, axis=0)  # utterance batch [batch(NM), n_mels, frames]
+    enroll_utter_batch = enroll_utter_batch[:, :, :160]  # for test session, fixed length slicing of input batch
+    enroll_utter_batch = np.transpose(enroll_utter_batch, axes=(2, 0, 1))  # transpose [frames, batch, n_mels]
+
+    valid_utter_batch = np.concatenate(valid_utter_batch, axis=0)  # utterance batch [batch(NM), n_mels, frames]
+    valid_utter_batch = valid_utter_batch[:, :, :160]  # for test session, fixed length slicing of input batch
+    valid_utter_batch = np.transpose(valid_utter_batch, axes=(2, 0, 1))  # transpose [frames, batch, n_mels]
+
+    return enroll_utter_batch, valid_utter_batch
+
+
 def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, utter_start=0, forceValidation=False):
     """ Generate 1 batch.
         For TI-SV, random frame length is applied to each batch of utterances (140-180 frames)
@@ -59,6 +109,34 @@ def random_batch(speaker_num=config.N, utter_num=config.M, shuffle=True, utter_s
 
     return utter_batch
 
+
+def batch_entire_valid_set(start_speaker, end_speaker):
+    """ Generates an enrollment and validation batch. To be used within a loop that iterates the entire valid dataset.
+        start_speaker : generate batch by starting from this speaker
+        end_speaker : end batch generation at this speaker (EXCLUSIVE)
+    :return: Ordered enrollment and validation batches (frames x batch(NM) x n_mels)
+    """
+    path = config.test_path
+    np_file_list = os.listdir(path)
+    selected_files = np_file_list[start_speaker:end_speaker]  # select N speakers itteratively to iterate thru valid_set
+
+    enroll_utter_batch = []
+    valid_utter_batch = []
+    for file in selected_files:
+        utters = np.load(os.path.join(path, file))        # load utterance spectrogram of selected speaker
+
+        enroll_utter_batch.append(utters[0: config.M])    # enroll this user with first M amount of utterances
+        valid_utter_batch.append(utters[config.M: (config.M + config.M)])  # verify this user with NEXT M amount
+
+    enroll_utter_batch = np.concatenate(enroll_utter_batch, axis=0)     # utterance batch [batch(NM), n_mels, frames]
+    enroll_utter_batch = enroll_utter_batch[:,:,:160]               # for test session, fixed length slicing of input batch
+    enroll_utter_batch = np.transpose(enroll_utter_batch, axes=(2,0,1))     # transpose [frames, batch, n_mels]
+
+    valid_utter_batch = np.concatenate(valid_utter_batch, axis=0)  # utterance batch [batch(NM), n_mels, frames]
+    valid_utter_batch = valid_utter_batch[:, :, :160]  # for test session, fixed length slicing of input batch
+    valid_utter_batch = np.transpose(valid_utter_batch, axes=(2, 0, 1))  # transpose [frames, batch, n_mels]
+
+    return enroll_utter_batch, valid_utter_batch
 
 def normalize(x):
     """ normalize the last dimension vector of the input matrix
