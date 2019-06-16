@@ -66,6 +66,7 @@ def train(path):
         os.makedirs("./Plots/", exist_ok=True)                          # make folder to save all plots and .txt logs
         os.makedirs("./Plots/" + path[11:], exist_ok=True)              # makes the subdirs for individual plots
         log_path = "./Plots/" + path[11:] + "/" + path[11:] + ".txt"    # declares .txt log files naming convention
+        ckpt_perf_log_path = "./Plots/" + path[11:] + "/" + path[11:] + "_ckpts.txt"
 
         # Block of code to make folders of runs for TensorBoard visualization
         logspath = os.path.join(path, "logs")
@@ -87,6 +88,8 @@ def train(path):
         train_loss_list = []  # collects the training loss results every 100 steps for plotting
         # LR_decay_list = []  # not used
 
+        ckpt_at_iter = 2500
+
         for iter in range(config.iteration):
             # run forward and backward propagation and update parameters
             _, loss_cur, summary = sess.run([train_op, loss, merged],
@@ -102,11 +105,9 @@ def train(path):
                 # print("(iter : %d) loss: %.4f" % ((iter+1),loss_acc/100))
                 # print("==============VALIDATION START!============")
 
-                # Draw validation graph
-                enroll = tf.placeholder(shape=[None, config.N * config.M, 40],
-                                        dtype=tf.float32)  # enrollment batch (time x batch x n_mel)
-                valid = tf.placeholder(shape=[None, config.N * config.M, 40],
-                                       dtype=tf.float32)  # validation batch (time x batch x n_mel)
+                # Draw validation graph, where enrollment AND validation batch batch (time x batch x n_mel)
+                enroll = tf.placeholder(shape=[None, config.N * config.M, 40], dtype=tf.float32)
+                valid = tf.placeholder(shape=[None, config.N * config.M, 40], dtype=tf.float32)
                 val_batch = tf.concat([enroll, valid], axis=1)
 
                 # Embedding LSTM (3-layer default)
@@ -114,9 +115,8 @@ def train(path):
                     lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in
                                   range(config.num_layer)]
                     lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)  # make lstm op and variables
-                    outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=val_batch, dtype=tf.float32,
-                                                   time_major=True)  # for TI-SV must use dynamic rnn
-                    embedded = outputs[-1]  # the last ouput is the embedded d-vector
+                    outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=val_batch, dtype=tf.float32, time_major=True)
+                    embedded = outputs[-1]          # the last output is the embedded d-vector
                     embedded = normalize(embedded)  # normalize
                 # print("embedded size: ", embedded.shape)
 
@@ -125,50 +125,93 @@ def train(path):
                                                                    shape=[config.N, config.M, -1]), axis=1))
                 # validation embedded vectors
                 valid_embed = embedded[config.N * config.M:, :]
+
                 similarity_matrix = similarity(embedded=valid_embed, w=1., b=0., center=enroll_embed)
 
                 # print("test file path : ", config.test_path)
 
-                # Return similarity matrix (SM) after enrollment and validation
-                time1 = time.time()  # for check inference time
-                enroll_batch, valid_batch = generate_valid_batches(config.N, config.M)
-                S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch,
-                                                           valid: valid_batch})
-                S = S.reshape([config.N, config.M, -1])
+                all_EER = []
+                all_thres = []
+                all_FAR = []
+                all_FRR = []
+
+                # Determine amount of batches able to run with current N
+                total_speakers = len(os.listdir(config.test_path))
+                total_possible_batches = total_speakers // config.N
+
+                # Track time of total EER process per validation START
+                time1 = time.time()
+
+                # Calc EER for max amount of possible batches
+                for i in range(total_possible_batches):
+
+                    # Generate enrollment and validation batches
+                    # and return similarity matrix after performing evaluation
+                    enroll_batch, valid_batch = batch_entire_valid_set(start_speaker=i * config.N,
+                                                                       end_speaker=(i * config.N) + config.N)
+                    S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch, valid: valid_batch})
+                    S = S.reshape([config.N, config.M, -1])
+
+                    np.set_printoptions(precision=4)
+                    # print("inference time for %d utterances : %0.2fs" % (2*config.M*config.N, time2-time1))
+                    # print(S)    # print similarity matrix
+
+                    # Declare vars to calculate EER
+                    diff = 1
+                    EER = 0
+                    EER_thres = 0
+                    EER_FAR = 0
+                    EER_FRR = 0
+
+                    # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
+                    for thres in [0.01 * i + 0.5 for i in range(50)]:
+                        S_thres = S > thres
+
+                        # False acceptance ratio = false acceptance / mismatched population (enroll speaker != test speaker)
+                        FAR = sum([np.sum(S_thres[i]) - np.sum(S_thres[i, :, i]) for i in range(config.N)]) / (
+                                    config.N - 1) / config.M / config.N
+
+                        # False reject ratio = false reject / matched population (enroll speaker = test speaker)
+                        FRR = sum([config.M - np.sum(S_thres[i][:, i]) for i in range(config.N)]) / config.M / config.N
+
+                        # Save threshold when FAR = FRR (=EER)
+                        if diff > abs(FAR - FRR):
+                            diff = abs(FAR - FRR)
+                            EER = (FAR + FRR) / 2
+                            EER_thres = thres
+                            EER_FAR = FAR
+                            EER_FRR = FRR
+
+                    all_EER.append(EER)
+                    all_thres.append(EER_thres)
+                    all_FAR.append(EER_FAR)
+                    all_FRR.append(EER_FRR)
+
+                    # Print out individual validation batch EERs. Uncomment to work.
+                    # print("Sub-EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" %
+                    #       ((i + 1), EER, EER_thres, EER_FAR, EER_FRR))
+
+                # Track time of total EER process per validation STOP
                 time2 = time.time()
 
-                np.set_printoptions(precision=4)
-                # print("inference time for %d utterences : %0.2fs" % (2 * config.M * config.N, time2 - time1))
-                # print(S)  # print similarity matrix
+                # Average EER, Threshold, FAR and FRR for printing
+                average_scores = [sum(all_EER) / len(all_EER),
+                                  sum(all_thres) / len(all_thres),
+                                  sum(all_FAR) / len(all_FAR),
+                                  sum(all_FRR) / len(all_FRR)]
 
-                # calculating EER
-                diff = 1
-                EER = 0
-                EER_thres = 0
-                EER_FAR = 0
-                EER_FRR = 0
+                print("(iter : %d) loss: %.4f || Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) ||"
+                      " inference time for %d utterances: %0.2fs" %
+                      ((iter + 1),         # Current hundredth iteration
+                       loss_acc / 100,     # Current loss
+                       average_scores[0],  # EER
+                       average_scores[1],  # Threshold
+                       average_scores[2],  # FAR
+                       average_scores[3],  # FRR
+                       2 * config.M * config.N,  # Number of utterance
+                       time2 - time1))  # Time it took to make in
 
-                # through thresholds calculate false acceptance ratio (FAR) and false reject ratio (FRR)
-                for thres in [0.01 * i + 0.5 for i in range(50)]:
-                    S_thres = S > thres
-
-                    # False acceptance ratio = false acceptance / mismatched population (enroll speaker != validation speaker)
-                    FAR = sum([np.sum(S_thres[i]) - np.sum(S_thres[i, :, i]) for i in range(config.N)]) / (
-                            config.N - 1) / config.M / config.N
-
-                    # False reject ratio = false reject / matched population (enroll speaker = validation speaker)
-                    FRR = sum([config.M - np.sum(S_thres[i][:, i]) for i in range(config.N)]) / config.M / config.N
-
-                    # Save threshold when FAR = FRR (=EER)
-                    if diff > abs(FAR - FRR):
-                        diff = abs(FAR - FRR)
-                        EER = (FAR + FRR) / 2
-                        EER_thres = thres
-                        EER_FAR = FAR
-                        EER_FRR = FRR
-
-                print("\n(iter : %d) loss: %.4f || EER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) || inference time for %d utterences: %0.2fs" % ((iter + 1), loss_acc / 100, EER, EER_thres, EER_FAR, EER_FRR, 2 * config.M * config.N, time2 - time1))
-                EER_list.append(EER)
+                EER_list.append(average_scores[0])  # Append Final (averaged) EER value to list for plotting
                 # print("==============VALIDATION END!==============")
                 train_loss_list.append(loss_acc/100)
 
@@ -203,16 +246,34 @@ def train(path):
                 # Every 100 iterations, save a log of training progress
                 with open(log_path, "a") as file:
                     file.write(str(iter+1) + "," + str(loss_acc/100) + "," +
-                               str(EER) + "," + str(EER_thres) + "," + str(EER_FAR) + "," + str(EER_FRR) + "\n")
+                               str(average_scores[0]) + "," +
+                               str(average_scores[1]) + "," +
+                               str(average_scores[2]) + "," +
+                               str(average_scores[3]) + "\n")
 
                 loss_acc = 0                        # reset accumulated loss
+
             # decay learning rate
-            if (iter+1) % 5000 == 0:
+            if (iter+1) % ckpt_at_iter == 0:
                 lr_factor /= 2                      # lr decay
                 print("Learning Rate (LR) decayed! Current LR: ", config.lr*lr_factor)
+
             # save model checkpoint
-            if (iter+1) % 5000 == 0:
-                saver.save(sess, os.path.join(path, "./Check_Point/model.ckpt"), global_step=iter//5000)  # naming val
+            if (iter+1) % ckpt_at_iter == 0:
+                saver.save(sess, os.path.join(path, "./Check_Point/model.ckpt"), global_step=iter//ckpt_at_iter)  # naming val
+                with open(ckpt_perf_log_path, "a") as file:
+                    file.write("Model %d, (iter : %d) || Ckpt EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) ||"
+                               " inference time for %d utterances: %0.2fs" %
+                               (iter//ckpt_at_iter,
+                                (iter + 1),         # Current hundredth iteration
+                                # loss_acc / 100,   # Current loss, currently commented out because its reset above
+                                average_scores[0],  # EER
+                                average_scores[1],  # Threshold
+                                average_scores[2],  # FAR
+                                average_scores[3],  # FRR
+                                2 * config.M * config.N,  # Number of utterance
+                                time2 - time1) + "\n")  # Time it took to make it, plus end line for next ckpt
+
                 print("Model checkpoint saved!")
 
 
@@ -269,14 +330,14 @@ def test(path):
         print("test file path : ", config.test_path)
 
         # return similarity matrix after enrollment and test set
-        time1 = time.time() # for check inference time
+        time1 = time.time()  # for check inference time
         S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
                                                    test: random_batch(shuffle=False, utter_start=config.M)})
         S = S.reshape([config.N, config.M, -1])
         time2 = time.time()
 
         np.set_printoptions(precision=4)
-        print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
+        print("inference time for %d utterances : %0.2fs" % (2*config.M*config.N, time2-time1))
         print(S)    # print similarity matrix
 
         # calculating EER
@@ -304,7 +365,7 @@ def test(path):
                 EER_FAR = FAR
                 EER_FRR = FRR
 
-        print("\nEER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)"%(EER,EER_thres,EER_FAR,EER_FRR))
+        print("\nEER : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % (EER, EER_thres, EER_FAR, EER_FRR))
 
 
 # Averaged test of 100 EERs
@@ -378,7 +439,7 @@ def averaged_test(path):
             time2 = time.time()
 
             np.set_printoptions(precision=4)
-            # print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
+            # print("inference time for %d utterances : %0.2fs" % (2*config.M*config.N, time2-time1))
             # print(S)    # print similarity matrix
 
             # calculating EER
@@ -423,16 +484,16 @@ def averaged_test(path):
 def test_entire_valid_set(path):
     tf.reset_default_graph()
 
-    # draw graph
+    # Draw graph
     enroll = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32) # enrollment batch (time x batch x n_mel)
-    test = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # test batch (time x batch x n_mel)
-    batch = tf.concat([enroll, test], axis=1)
+    valid = tf.placeholder(shape=[None, config.N*config.M, 40], dtype=tf.float32)  # test batch (time x batch x n_mel)
+    val_batch = tf.concat([enroll, valid], axis=1)
 
-    # embedding lstm (3-layer default)
+    # Embedding lstm (3-layer default)
     with tf.variable_scope("lstm"):
         lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
         lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # make lstm op and variables
-        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
+        outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=val_batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
         embedded = outputs[-1]                            # the last ouput is the embedded d-vector
         embedded = normalize(embedded)                    # normalize
 
@@ -445,10 +506,10 @@ def test_entire_valid_set(path):
 
     # enrollment embedded vectors (speaker model)
     enroll_embed = normalize(tf.reduce_mean(tf.reshape(embedded[:config.N*config.M, :], shape= [config.N, config.M, -1]), axis=1))
-    # test embedded vectors
-    test_embed = embedded[config.N*config.M:, :]
+    # validation embedded vectors
+    valid_embed = embedded[config.N*config.M:, :]
 
-    similarity_matrix = similarity(embedded=test_embed, w=1., b=0., center=enroll_embed)
+    similarity_matrix = similarity(embedded=valid_embed, w=1., b=0., center=enroll_embed)
 
     saver = tf.train.Saver(var_list=tf.global_variables())
     with tf.Session() as sess:
@@ -471,9 +532,6 @@ def test_entire_valid_set(path):
 
         # print("test file path : ", config.test_path)
 
-        # return similarity matrix after enrollment and test set
-        time1 = time.time() # for check inference time
-
         all_EER = []
         all_thres = []
         all_FAR = []
@@ -483,23 +541,23 @@ def test_entire_valid_set(path):
         total_speakers = len(os.listdir(config.test_path))
         total_possible_batches = total_speakers // config.N
 
+        # Track time of total EER process per validation START
+        time1 = time.time()
+
         # Calc EER for max amount of possible batches
         for i in range(total_possible_batches):
 
-            # S = sess.run(similarity_matrix, feed_dict={enroll: random_batch(shuffle=False),
-            #                                            test: random_batch(shuffle=False, utter_start=config.M)})
-
+            # Generate enrollment and validation batches
+            # and return similarity matrix after performing evaluation
             enroll_batch, valid_batch = batch_entire_valid_set(start_speaker=i*config.N, end_speaker=(i*config.N)+config.N)
-            S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch, test: valid_batch})
-
+            S = sess.run(similarity_matrix, feed_dict={enroll: enroll_batch, valid: valid_batch})
             S = S.reshape([config.N, config.M, -1])
-            time2 = time.time()
 
             np.set_printoptions(precision=4)
-            # print("inference time for %d utterences : %0.2fs" % (2*config.M*config.N, time2-time1))
+            # print("inference time for %d utterances : %0.2fs" % (2*config.M*config.N, time2-time1))
             # print(S)    # print similarity matrix
 
-            # calculating EER
+            # Declare vars to calculate EER
             diff = 1
             EER = 0
             EER_thres = 0
@@ -530,8 +588,19 @@ def test_entire_valid_set(path):
             all_FRR.append(EER_FRR)
             print("\nEER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % ((i+1),EER,EER_thres,EER_FAR,EER_FRR))
 
+        # Track time of total EER process per validation STOP
+        time2 = time.time()
+
+        # Average EER, Threshold, FAR and FRR for printing
         average_scores = [sum(all_EER) / len(all_EER),
                           sum(all_thres) / len(all_thres),
                           sum(all_FAR) / len(all_FAR),
                           sum(all_FRR) / len(all_FRR)]
-        print("Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % (average_scores[0], average_scores[1], average_scores[2], average_scores[3]) )
+
+        print("Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) || inference time for %d utterances: %0.2fs" %
+              (average_scores[0],        # EER
+               average_scores[1],        # Threshold
+               average_scores[2],        # FAR
+               average_scores[3],        # FRR
+               2 * config.M * config.N,  # Number of utterance
+               time2 - time1))           # Time it took to make in
