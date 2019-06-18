@@ -50,11 +50,11 @@ def train(path):
     print("total variables :", variable_count)
 
     # TensorBoard vars declaration
-    lr_summ = tf.summary.scalar(name='My_LR', tensor=lr)
-    loss_summary = tf.summary.scalar("loss_ORIG", loss)
-    w_summary = tf.summary.histogram('My_Weights', w)
-    b_summary = tf.summary.histogram('My_Bias', b)
-    merged = tf.summary.merge_all()                 # merge all TB vars into one
+    # lr_summ = tf.summary.scalar(name='My_LR', tensor=lr)
+    # loss_summary = tf.summary.scalar("loss_ORIG", loss)
+    # w_summary = tf.summary.histogram('My_Weights', w)
+    # b_summary = tf.summary.histogram('My_Bias', b)
+    # merged = tf.summary.merge_all()                 # merge all TB vars into one
     saver = tf.train.Saver(max_to_keep=40)          # create a saver, max_to_keep=40 w/ every 2500 steps = around 100000
 
     # Training session
@@ -69,14 +69,14 @@ def train(path):
         ckpt_perf_log_path = "./Plots/" + path[11:] + "/" + path[11:] + "_ckpts.txt"
 
         # Block of code to make folders of runs for TensorBoard visualization
-        logspath = os.path.join(path, "logs")
-        num_previous_runs = os.listdir('./tisv_model/logs')
-        if len(num_previous_runs) == 0:
-            run_number = 1
-        else:
-            run_number = max([int(s.split('run_')[1]) for s in num_previous_runs]) + 1
-        curr_logdir = 'run_%02d' % run_number
-        writer = tf.summary.FileWriter(os.path.join(logspath, curr_logdir), sess.graph)  # Define writer for TensorBoard
+        # logspath = os.path.join(path, "logs")
+        # num_previous_runs = os.listdir('./tisv_model/logs')
+        # if len(num_previous_runs) == 0:
+        #     run_number = 1
+        # else:
+        #     run_number = max([int(s.split('run_')[1]) for s in num_previous_runs]) + 1
+        # curr_logdir = 'run_%02d' % run_number
+        # writer = tf.summary.FileWriter(os.path.join(logspath, curr_logdir), sess.graph)  # Define writer for TensorBoard
         # END of Block
 
         # epoch = 0      # not used
@@ -88,18 +88,19 @@ def train(path):
         train_loss_list = []  # collects the training loss results every 100 steps for plotting
         # LR_decay_list = []  # not used
 
-        ckpt_at_iter = 2500
+        ckpt_at_iter = 5000
 
         for iter in range(config.iteration):
             # run forward and backward propagation and update parameters
-            _, loss_cur, summary = sess.run([train_op, loss, merged],
+            # _, loss_cur, summary = sess.run([train_op, loss, merged],
+            _, loss_cur, summary = sess.run([train_op, loss],
                                   feed_dict={train_batch: random_batch(), lr: config.lr*lr_factor})
 
             loss_acc += loss_cur    # accumulated loss for each 100 iteration
 
             # write train_loss to TensorBoard
-            if iter % 10 == 0:
-                writer.add_summary(summary, iter)
+            # if iter % 10 == 0:
+            #     writer.add_summary(summary, iter)
             # perform validation
             if (iter+1) % 100 == 0:
                 # print("(iter : %d) loss: %.4f" % ((iter+1),loss_acc/100))
@@ -188,8 +189,8 @@ def train(path):
                     all_FRR.append(EER_FRR)
 
                     # Print out individual validation batch EERs. Uncomment to work.
-                    # print("Sub-EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" %
-                    #       ((i + 1), EER, EER_thres, EER_FAR, EER_FRR))
+                    print("Sub-EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" %
+                          ((i + 1), EER, EER_thres, EER_FAR, EER_FRR))
 
                 # Track time of total EER process per validation STOP
                 time2 = time.time()

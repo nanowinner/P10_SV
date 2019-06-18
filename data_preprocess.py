@@ -7,7 +7,8 @@ from configuration import get_config
 config = get_config()   # get arguments from parser
 
 # downloaded dataset path
-audio_path = r'C:\VoxCeleb\vox1_dev_wav\wav' # VoxCeleb1 dataset
+# audio_path = r'C:\VoxCeleb\vox1_dev_wav\wav' # VoxCeleb1 dataset
+audio_path = r'C:\VoxCeleb\vox2_dev_aac\vox2_aac\dev\aac' # VoxCeleb2 dataset
 
 
 def save_spectrogram_tisv():
@@ -23,14 +24,13 @@ def save_spectrogram_tisv():
     utter_min_len = (config.tisv_frame * config.hop + config.window) * config.sr    # lower bound of utterance length
     total_speaker_num = len(os.listdir(audio_path))
     train_speaker_num = (total_speaker_num//10)*9            # split total data 90% train and 10% test
-    print("total speaker number : %d"%total_speaker_num)
-    print("train : %d, test : %d"%(train_speaker_num, total_speaker_num-train_speaker_num))
+    print("total speaker number : %d" % total_speaker_num)
+    print("train : %d, test : %d" % (train_speaker_num, total_speaker_num-train_speaker_num))
 
     for i, folder in enumerate(os.listdir(audio_path)):
         speaker_path = os.path.join(audio_path, folder)     # path of each speaker
-        print("%dth speaker processing..."%i)
+        print("%dth speaker processing..." % i)
         utterances_spec = []
-        k=0
 
         for video_ID in os.listdir(speaker_path):
             video_path = os.path.join(speaker_path, video_ID)               # path of each video belonging to same speakerID
@@ -56,9 +56,9 @@ def save_spectrogram_tisv():
         utterances_spec = np.array(utterances_spec)
         print(utterances_spec.shape)
         if i<train_speaker_num:      # save spectrogram as numpy file
-            np.save(os.path.join("C:\\Users\\erh\\PyCharmProjects\\Speaker_Verification\\train_tisv_NEW", "speaker%d.npy"%i), utterances_spec)
+            np.save(os.path.join("C:\\Users\\erh\\PyCharmProjects\\Speaker_Verification\\train_tisv_NEW", "speaker%d.npy" % i), utterances_spec)
         else:
-            np.save(os.path.join("C:\\Users\\erh\\PyCharmProjects\\Speaker_Verification\\test_tisv_NEW", "speaker%d.npy"%(i-train_speaker_num)), utterances_spec)
+            np.save(os.path.join("C:\\Users\\erh\\PyCharmProjects\\Speaker_Verification\\test_tisv_NEW", "speaker%d.npy" % (i-train_speaker_num)), utterances_spec)
 
 
 if __name__ == "__main__":
