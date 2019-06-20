@@ -1,0 +1,9 @@
+# Manually compiled, only last run is accurate.
+
+0 Final EER: 0.1982 (thres:0.6251, FAR:0.1986, FRR:0.1978) || inference time for 320 utterances: 43.77s
+1 Final EER: 0.1870 (thres:0.5556, FAR:0.1821, FRR:0.1919) || inference time for 320 utterances: 47.05s
+2 Final EER: 0.1768 (thres:0.5260, FAR:0.1665, FRR:0.1871) || inference time for 320 utterances: 33.50s
+3 Final EER: 0.1752 (thres:0.5171, FAR:0.1603, FRR:0.1901) || inference time for 320 utterances: 37.90s
+4 Final EER: 0.1735 (thres:0.5153, FAR:0.1560, FRR:0.1910) || inference time for 320 utterances: 37.96s
+5 Final EER: 0.1733 (thres:0.5176, FAR:0.1572, FRR:0.1894) || inference time for 320 utterances: 40.76s
+6 Final EER: 0.1738 (thres:0.5144, FAR:0.1534, FRR:0.1943) || inference time for 320 utterances: 36.79s

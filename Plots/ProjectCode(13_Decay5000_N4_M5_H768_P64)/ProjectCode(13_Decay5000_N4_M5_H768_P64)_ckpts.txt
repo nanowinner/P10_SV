@@ -1,0 +1,14 @@
+Model 0, (iter : 5000) || Ckpt EER: 0.2144 (thres:0.7937, FAR:0.2189, FRR:0.2100) || inference time for 40 utterances: 6.48s
+Model 1, (iter : 10000) || Ckpt EER: 0.1869 (thres:0.7747, FAR:0.1856, FRR:0.1883) || inference time for 40 utterances: 7.36s
+Model 2, (iter : 15000) || Ckpt EER: 0.1714 (thres:0.7443, FAR:0.1711, FRR:0.1717) || inference time for 40 utterances: 8.28s
+Model 3, (iter : 20000) || Ckpt EER: 0.1578 (thres:0.7383, FAR:0.1589, FRR:0.1567) || inference time for 40 utterances: 9.27s
+Model 4, (iter : 25000) || Ckpt EER: 0.1544 (thres:0.7493, FAR:0.1539, FRR:0.1550) || inference time for 40 utterances: 10.55s
+Model 5, (iter : 30000) || Ckpt EER: 0.1519 (thres:0.7447, FAR:0.1572, FRR:0.1467) || inference time for 40 utterances: 11.77s
+Model 6, (iter : 35000) || Ckpt EER: 0.1500 (thres:0.7537, FAR:0.1533, FRR:0.1467) || inference time for 40 utterances: 14.27s
+Model 7, (iter : 40000) || Ckpt EER: 0.1483 (thres:0.7537, FAR:0.1500, FRR:0.1467) || inference time for 40 utterances: 15.86s
+Model 8, (iter : 45000) || Ckpt EER: 0.1458 (thres:0.7533, FAR:0.1500, FRR:0.1417) || inference time for 40 utterances: 17.47s
+Model 9, (iter : 50000) || Ckpt EER: 0.1464 (thres:0.7533, FAR:0.1511, FRR:0.1417) || inference time for 40 utterances: 19.91s
+Model 10, (iter : 55000) || Ckpt EER: 0.1464 (thres:0.7530, FAR:0.1511, FRR:0.1417) || inference time for 40 utterances: 22.40s
+Model 11, (iter : 60000) || Ckpt EER: 0.1456 (thres:0.7517, FAR:0.1494, FRR:0.1417) || inference time for 40 utterances: 24.42s
+Model 12, (iter : 65000) || Ckpt EER: 0.1461 (thres:0.7523, FAR:0.1489, FRR:0.1433) || inference time for 40 utterances: 29.68s
+Model 13, (iter : 70000) || Ckpt EER: 0.1461 (thres:0.7523, FAR:0.1489, FRR:0.1433) || inference time for 40 utterances: 31.64s

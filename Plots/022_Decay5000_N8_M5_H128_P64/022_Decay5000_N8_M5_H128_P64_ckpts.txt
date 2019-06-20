@@ -1,0 +1,1 @@
+Model 0, (iter : 5000) || Ckpt EER: 0.1992 (thres:0.7252, FAR:0.1995, FRR:0.1989) || inference time for 80 utterances: 967.35s

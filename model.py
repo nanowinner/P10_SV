@@ -6,9 +6,12 @@ import matplotlib.pyplot as plt
 from utils import random_batch, normalize, similarity, loss_cal, optim, generate_valid_batches, batch_entire_valid_set
 from configuration import get_config
 
+from tensorflow.python.util import deprecation
+deprecation._PRINT_DEPRECATION_WARNINGS = False
+
 config = get_config()
 # Uncomment to run on CPU
-# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 
 def train(path):
@@ -25,16 +28,15 @@ def train(path):
     # Embedding LSTM (3-layer default)
     with tf.variable_scope("lstm", reuse=None):
         lstm_cells = [tf.contrib.rnn.LSTMCell(num_units=config.hidden, num_proj=config.proj) for i in range(config.num_layer)]
-        print(config.num_layer)
         lstm = tf.contrib.rnn.MultiRNNCell(lstm_cells)    # define lstm op and variables
         outputs, _ = tf.nn.dynamic_rnn(cell=lstm, inputs=train_batch, dtype=tf.float32, time_major=True)   # for TI-VS must use dynamic rnn
         embedded = outputs[-1]                            # the last ouput is the embedded d-vector
         embedded = normalize(embedded)                    # normalize
-    print("embedded size: ", embedded.shape)
+    print("Embedded size: ", embedded.shape)
 
     # Define loss
     sim_matrix = similarity(embedded, w, b)
-    print("similarity matrix size: ", sim_matrix.shape)
+    print("Similarity matrix size: ", sim_matrix.shape)
     loss = loss_cal(sim_matrix, type=config.loss)
 
     # Optimizer operation
@@ -47,7 +49,7 @@ def train(path):
 
     # Check variables memory
     variable_count = np.sum(np.array([np.prod(np.array(v.get_shape().as_list())) for v in trainable_vars]))
-    print("total variables :", variable_count)
+    print("Total variables :", variable_count)
 
     # TensorBoard vars declaration
     # lr_summ = tf.summary.scalar(name='My_LR', tensor=lr)
@@ -88,22 +90,41 @@ def train(path):
         train_loss_list = []  # collects the training loss results every 100 steps for plotting
         # LR_decay_list = []  # not used
 
+        # Declare lists for EER logging and calculations
+        all_EER = []
+        all_thres = []
+        all_FAR = []
+        all_FRR = []
+
+        # Declare list for measuring the average batch load time
+        loading_times = []
+
+        # Declare list to hold average scores during calculations
+        average_scores = []
+
         ckpt_at_iter = 5000
 
         for iter in range(config.iteration):
+            time_before = time.time()
+
             # run forward and backward propagation and update parameters
             # _, loss_cur, summary = sess.run([train_op, loss, merged],
-            _, loss_cur, summary = sess.run([train_op, loss],
+            _, loss_cur = sess.run([train_op, loss],
                                   feed_dict={train_batch: random_batch(), lr: config.lr*lr_factor})
 
+            time_after = time.time()
+            loading_times.append(time_after-time_before)
             loss_acc += loss_cur    # accumulated loss for each 100 iteration
 
             # write train_loss to TensorBoard
             # if iter % 10 == 0:
             #     writer.add_summary(summary, iter)
+
             # perform validation
             if (iter+1) % 100 == 0:
-                # print("(iter : %d) loss: %.4f" % ((iter+1),loss_acc/100))
+                # Print average loading time of these last 100 steps and clear list for next 100
+                print("%s - average train time" % (sum(loading_times) / len(loading_times)))
+                loading_times.clear()
                 # print("==============VALIDATION START!============")
 
                 # Draw validation graph, where enrollment AND validation batch batch (time x batch x n_mel)
@@ -131,10 +152,10 @@ def train(path):
 
                 # print("test file path : ", config.test_path)
 
-                all_EER = []
-                all_thres = []
-                all_FAR = []
-                all_FRR = []
+                all_EER.clear()
+                all_thres.clear()
+                all_FAR.clear()
+                all_FRR.clear()
 
                 # Determine amount of batches able to run with current N
                 total_speakers = len(os.listdir(config.test_path))
@@ -189,17 +210,17 @@ def train(path):
                     all_FRR.append(EER_FRR)
 
                     # Print out individual validation batch EERs. Uncomment to work.
-                    print("Sub-EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" %
-                          ((i + 1), EER, EER_thres, EER_FAR, EER_FRR))
+                    # print("Sub-EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" %
+                    #       ((i + 1), EER, EER_thres, EER_FAR, EER_FRR))
 
                 # Track time of total EER process per validation STOP
                 time2 = time.time()
 
                 # Average EER, Threshold, FAR and FRR for printing
-                average_scores = [sum(all_EER) / len(all_EER),
-                                  sum(all_thres) / len(all_thres),
-                                  sum(all_FAR) / len(all_FAR),
-                                  sum(all_FRR) / len(all_FRR)]
+                average_scores.append(sum(all_EER) / len(all_EER))
+                average_scores.append(sum(all_thres) / len(all_thres))
+                average_scores.append(sum(all_FAR) / len(all_FAR))
+                average_scores.append(sum(all_FRR) / len(all_FRR))
 
                 print("(iter : %d) loss: %.4f || Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) ||"
                       " inference time for %d utterances: %0.2fs" %
@@ -254,6 +275,7 @@ def train(path):
 
                 loss_acc = 0                        # reset accumulated loss
 
+
             # decay learning rate
             if (iter+1) % ckpt_at_iter == 0:
                 lr_factor /= 2                      # lr decay
@@ -276,6 +298,7 @@ def train(path):
                                 time2 - time1) + "\n")  # Time it took to make it, plus end line for next ckpt
 
                 print("Model checkpoint saved!")
+            average_scores.clear()  # clear list for next 100 iters
 
 
 # Test Session
@@ -587,7 +610,7 @@ def test_entire_valid_set(path):
             all_thres.append(EER_thres)
             all_FAR.append(EER_FAR)
             all_FRR.append(EER_FRR)
-            print("\nEER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % ((i+1),EER,EER_thres,EER_FAR,EER_FRR))
+            print("EER num. %i : %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f)" % ((i+1),EER,EER_thres,EER_FAR,EER_FRR))
 
         # Track time of total EER process per validation STOP
         time2 = time.time()
@@ -597,6 +620,8 @@ def test_entire_valid_set(path):
                           sum(all_thres) / len(all_thres),
                           sum(all_FAR) / len(all_FAR),
                           sum(all_FRR) / len(all_FRR)]
+
+        # print("\nLatest similarity matrix: \n%s" % S)
 
         print("Final EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) || inference time for %d utterances: %0.2fs" %
               (average_scores[0],        # EER

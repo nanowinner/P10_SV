@@ -1,0 +1,12 @@
+# MANUALLY CREATED
+
+Model 0, Final EER: 0.1928 (thres:0.8353, FAR:0.1989, FRR:0.1867) || inference time for 40 utterances: 8.39s
+Model 1, Final EER: 0.1953 (thres:0.7963, FAR:0.1989, FRR:0.1917) || inference time for 40 utterances: 8.24s
+Model 2, Final EER: 0.1603 (thres:0.7267, FAR:0.1606, FRR:0.1600) || inference time for 40 utterances: 9.19s
+Model 3, Final EER: 0.1450 (thres:0.7040, FAR:0.1467, FRR:0.1433) || inference time for 40 utterances: 8.38s
+Model 4, Final EER: 0.1411 (thres:0.7243, FAR:0.1422, FRR:0.1400) || inference time for 40 utterances: 8.75s
+Model 5, Final EER: 0.1411 (thres:0.7157, FAR:0.1422, FRR:0.1400) || inference time for 40 utterances: 9.39s
+Model 6, Final EER: 0.1428 (thres:0.6920, FAR:0.1422, FRR:0.1433) || inference time for 40 utterances: 8.36s
+Model 7, Final EER: 0.1350 (thres:0.7047, FAR:0.1367, FRR:0.1333) || inference time for 40 utterances: 8.88s
+Model 8, Final EER: 0.1408 (thres:0.7087, FAR:0.1417, FRR:0.1400) || inference time for 40 utterances: 8.66s
+Model 9, Final EER: 0.1397 (thres:0.7003, FAR:0.1394, FRR:0.1400) || inference time for 40 utterances: 91.88s
