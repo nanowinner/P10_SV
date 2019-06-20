@@ -5,7 +5,52 @@
     <option name="CUSTOM_SCOPE_NAME" value="Open Files" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a6c898ae-bdf6-4194-a5dd-627cbad6fb16" name="Default Changelist" comment="">
+    <list default="true" id="a6c898ae-bdf6-4194-a5dd-627cbad6fb16" name="Default Changelist" comment="Commented out TensorBoard params.">
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_11_Decay2500_N4_M5_H128_P64)/ProjectCode(4spkrs_11_Decay2500_N4_M5_H128_P64).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_12_Decay2500_N4_M5_H64_P32)/ProjectCode(4spkrs_12_Decay2500_N4_M5_H64_P32).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256)_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256)_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64)/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64)/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT).png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT).txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT_LOSS.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
@@ -41,19 +86,9 @@
           <provider selected="true" editor-type-id="images" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
           <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/README.md">
-          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-            <state split_layout="SPLIT">
-              <first_editor />
-              <second_editor />
-            </state>
-          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -172,6 +207,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/tisv_model_OLD" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -362,7 +398,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1552990994677</updated>
-      <workItem from="1560799820356" duration="54818000" />
+      <workItem from="1560799820356" duration="56839000" />
     </task>
     <task id="LOCAL-00001" summary="Checkpoint before globalization">
       <created>1559033361865</created>
@@ -429,7 +465,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54818000" />
+    <option name="totallyTimeSpent" value="56839000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -442,7 +478,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4899329" visible="true" weight="0.24466951" />
       <window_info id="Favorites" order="1" side_tool="true" />
@@ -811,9 +846,6 @@
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -821,6 +853,9 @@
           <second_editor />
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
+      <provider selected="true" editor-type-id="images" />
     </entry>
   </component>
   <component name="masterDetails">
