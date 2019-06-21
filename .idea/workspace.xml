@@ -6,53 +6,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6c898ae-bdf6-4194-a5dd-627cbad6fb16" name="Default Changelist" comment="Commented out TensorBoard params.">
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_11_Decay2500_N4_M5_H128_P64)/ProjectCode(4spkrs_11_Decay2500_N4_M5_H128_P64).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_12_Decay2500_N4_M5_H64_P32)/ProjectCode(4spkrs_12_Decay2500_N4_M5_H64_P32).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256)_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256)_OLD/ProjectCode(4spkrs_13_Decay2500_N4_M5_H768_P256).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64)/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64)/ProjectCode(4spkrs_14_Decay2500_N4_M5_H768_P64).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)/ProjectCode(4spkrs_21_Decay10000_N4_M5_H768_P256)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)/ProjectCode(4spkrs_22_Decay2500_N4_M5_H16_P8)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)/ProjectCode(4spkrs_23_Decay5000_N4_M5_H16_P8)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT/ProjectCode(8spkrs_16_Decay2500_N8_M5_H128_P64)_REPEAT_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT/ProjectCode(8spkrs_17_Decay2500_N8_M5_H64_P32)_REPEAT_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT/ProjectCode(8spkrs_18_Decay2500_N8_M5_H16_P8)_REPEAT_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT/ProjectCode(8spkrs_19_Decay2500_N8_M5_H256_P256)_REPEAT_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT).txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)/ProjectCode(8spkrs_20_Decay2500_N8_M5_H256_P256_REPEAT)_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots_OLD/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT/ProjectCode(8spkrs_24_Decay2500_N8_M5_H768_P256)_REPEAT_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_ckpts.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_LOSS.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_ckpts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Speaker_Verification.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Speaker_Verification.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plots/ProjectCode(99_Decay2500_N4_M5_H16_P8)/ProjectCode(99_Decay2500_N4_M5_H16_P8).txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -71,41 +36,39 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="226">
-              <caret line="624" lean-forward="true" selection-start-line="624" selection-end-line="624" />
+            <state relative-caret-position="280">
+              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
                 <element signature="e#3754#3823#0" />
+                <element signature="e#11567#12808#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
-          <provider selected="true" editor-type-id="images" />
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="301">
+              <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(52_Decay2500_N16_M10_H128_P64)/ProjectCode(52_Decay2500_N16_M10_H128_P64).png">
-          <provider selected="true" editor-type-id="images" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(53_Decay5000_N16_M10_H768_P64)_FV/ProjectCode(53_Decay5000_N16_M10_H768_P64)_FV.png">
-          <provider selected="true" editor-type-id="images" />
+        <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="4" selection-start-line="4" selection-end-line="5" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>train</find>
       <find>summary</find>
       <find>loss</find>
       <find>path</find>
@@ -131,10 +94,11 @@
       <find>= []</find>
       <find>= []</find>
       <find>average_scores</find>
-      <find>colocate_with</find>
       <find>[]</find>
       <find>embedded</find>
       <find>N8_M5_H768_P256</find>
+      <find>colocate_with</find>
+      <find>0.159</find>
     </findStrings>
     <replaceStrings>
       <replace>%0.6f</replace>
@@ -166,7 +130,6 @@
       <list>
         <option value="$PROJECT_DIR$/tisv_model/Check_Point/checkpoint" />
         <option value="$PROJECT_DIR$/configuration.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/Plots/ProjectCode(99_Decay2500_N16_M10_H128_P64)/ProjectCode(99_Decay2500_N16_M10_H128_P64).txt" />
         <option value="$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt" />
         <option value="$PROJECT_DIR$/Plots/ProjectCode(11_Decay2500_N4_M5_H64_P32)/ProjectCode(11_Decay2500_N4_M5_H64_P32)_ckpts.txt" />
@@ -175,9 +138,10 @@
         <option value="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.txt" />
         <option value="$PROJECT_DIR$/utils.py" />
         <option value="$PROJECT_DIR$/Plots/012_Decay5000_N4_M5_H128_P64/012_Decay5000_N4_M5_H128_P64_ckpts.txt" />
-        <option value="$PROJECT_DIR$/model.py" />
         <option value="$PROJECT_DIR$/Plots/ProjectCode(50_Decay2500_N16_M10_H16_P8)_FV/ckpts.txt" />
         <option value="$PROJECT_DIR$/Plots/ProjectCode(52_Decay2500_N16_M10_H128_P64)/ckpts.txt" />
+        <option value="$PROJECT_DIR$/model.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -198,6 +162,28 @@
             <path>
               <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
               <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
+              <item name="Plots" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
+              <item name="Plots" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectCode(12_Decay2500_N4_M5_H128_P64)" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
+              <item name="Plots" type="462c0819:PsiDirectoryNode" />
+              <item name="ProjectCode(54_Decay5000_N16_M10_H768_P256)" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
+              <item name="tisv_model" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -398,7 +384,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1552990994677</updated>
-      <workItem from="1560799820356" duration="56839000" />
+      <workItem from="1560799820356" duration="68609000" />
     </task>
     <task id="LOCAL-00001" summary="Checkpoint before globalization">
       <created>1559033361865</created>
@@ -465,7 +451,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56839000" />
+    <option name="totallyTimeSpent" value="68609000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -493,8 +479,8 @@
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49626866" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50373137" side_tool="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32936078" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49941862" visible="true" weight="0.3900325" />
-      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49069768" weight="0.27843988" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49941862" weight="0.3900325" />
+      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49069768" visible="true" weight="0.44853738" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="SciView" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -557,18 +543,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/model.py</url>
-          <line>464</line>
+          <line>466</line>
           <option name="timeStamp" value="24" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_preprocess.py</url>
           <line>29</line>
           <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/model.py</url>
-          <line>219</line>
-          <option name="timeStamp" value="42" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -633,42 +614,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(10_Decay2500_N4_M5_H16_P8)/ProjectCode(10_Decay2500_N4_M5_H16_P8).png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(10_Decay2500_N4_M5_H16_P8)/ProjectCode(10_Decay2500_N4_M5_H16_P8)_LOSS.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://C:/Anaconda/envs/erh/Lib/typing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="2323" column="12" selection-start-line="2323" selection-start-column="12" selection-end-line="2323" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(14_Decay5000_N4_M5_H768_P256)/ProjectCode(14_Decay5000_N4_M5_H768_P256)_LOSS.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_LOSS.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(11_Decay2500_N4_M5_H64_P32)/ProjectCode(11_Decay2500_N4_M5_H64_P32)_LOSS.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(11_Decay2500_N4_M5_H64_P32)/ProjectCode(11_Decay2500_N4_M5_H64_P32)_ckpts.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="54" selection-start-line="5" selection-start-column="54" selection-end-line="5" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(14_Decay5000_N4_M5_H768_P256)/ProjectCode(14_Decay5000_N4_M5_H768_P256)_ckpts.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(11_Decay2500_N4_M5_H64_P32)/ProjectCode(11_Decay2500_N4_M5_H64_P32).png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -729,13 +674,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/014_Decay5000_N4_M5_H768_P256/014_Decay5000_N4_M5_H768_P256_ckpts.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -744,16 +682,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Plots/014_Decay5000_N4_M5_H768_P256/014_Decay5000_N4_M5_H768_P256.txt">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-48">
-          <caret line="84" selection-start-line="84" selection-end-line="84" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Plots/022_Decay5000_N8_M5_H128_P64/022_Decay5000_N8_M5_H128_P64.png">
       <provider selected="true" editor-type-id="images" />
@@ -792,23 +720,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/012_Decay5000_N4_M5_H128_P64/012_Decay5000_N4_M5_H128_P64_ckpts.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="1" selection-start-column="1" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="4" selection-start-line="4" selection-end-line="5" />
         </state>
       </provider>
     </entry>
@@ -826,24 +741,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="624" lean-forward="true" selection-start-line="624" selection-end-line="624" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <element signature="e#3754#3823#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(52_Decay2500_N16_M10_H128_P64)/ProjectCode(52_Decay2500_N16_M10_H128_P64).png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(53_Decay5000_N16_M10_H768_P64)_FV/ProjectCode(53_Decay5000_N16_M10_H768_P64)_FV.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
       <provider selected="true" editor-type-id="images" />
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -856,6 +757,83 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
       <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-295">
+          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(44_Decay5000_N8_M10_H768_P256)/ProjectCode(44_Decay5000_N8_M10_H768_P256).png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(34_Decay5000_N4_M10_H768_P256)_NEW_VALID/ProjectCode(34_Decay5000_N4_M10_H768_P256)_NEW_VALID.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(44_Decay5000_N8_M10_H768_P256)/ProjectCode(44_Decay5000_N8_M10_H768_P256).txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8783">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(34_Decay5000_N4_M10_H768_P256)/ProjectCode(34_Decay5000_N4_M10_H768_P256).png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(99_Decay2500_N4_M5_H16_P8)/ProjectCode(99_Decay2500_N4_M5_H16_P8).txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(14_Decay5000_N4_M5_H768_P256)/ProjectCode(14_Decay5000_N4_M5_H768_P256)_ckpts.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_ckpts.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_ckpts.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <element signature="e#3754#3823#0" />
+            <element signature="e#11567#12808#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" selection-start-line="4" selection-end-line="5" />
+        </state>
+      </provider>
     </entry>
   </component>
   <component name="masterDetails">

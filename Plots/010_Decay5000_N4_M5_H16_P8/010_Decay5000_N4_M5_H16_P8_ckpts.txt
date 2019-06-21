@@ -1,0 +1,3 @@
+Model 0, (iter : 5000) || Ckpt EER: 0.3171 (thres:0.9612, FAR:0.3221, FRR:0.3122) || inference time for 40 utterances: 36.15s
+Model 1, (iter : 10000) || Ckpt EER: 0.2675 (thres:0.9439, FAR:0.2713, FRR:0.2638) || inference time for 40 utterances: 36.51s
+Model 2, (iter : 15000) || Ckpt EER: 0.2568 (thres:0.9217, FAR:0.2611, FRR:0.2525) || inference time for 40 utterances: 38.78s

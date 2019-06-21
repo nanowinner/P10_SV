@@ -6,6 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/Plots_OLD" />
       <excludeFolder url="file://$MODULE_DIR$/test_tisv" />
       <excludeFolder url="file://$MODULE_DIR$/test_tisv_VC2" />
+      <excludeFolder url="file://$MODULE_DIR$/tisv_model" />
       <excludeFolder url="file://$MODULE_DIR$/tisv_model_OLD" />
       <excludeFolder url="file://$MODULE_DIR$/train_tisv" />
       <excludeFolder url="file://$MODULE_DIR$/train_tisv_VC2" />
