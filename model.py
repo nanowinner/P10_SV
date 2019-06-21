@@ -11,7 +11,7 @@ deprecation._PRINT_DEPRECATION_WARNINGS = False
 
 config = get_config()
 # Uncomment to run on CPU
-os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 
 def train(path):
@@ -284,6 +284,8 @@ def train(path):
             # save model checkpoint
             if (iter+1) % ckpt_at_iter == 0:
                 saver.save(sess, os.path.join(path, "./Check_Point/model.ckpt"), global_step=iter//ckpt_at_iter)  # naming val
+
+                # save EER at each model checkpoint
                 with open(ckpt_perf_log_path, "a") as file:
                     file.write("Model %d, (iter : %d) || Ckpt EER: %0.4f (thres:%0.4f, FAR:%0.4f, FRR:%0.4f) ||"
                                " inference time for %d utterances: %0.2fs" %

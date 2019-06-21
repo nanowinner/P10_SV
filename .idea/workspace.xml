@@ -6,17 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6c898ae-bdf6-4194-a5dd-627cbad6fb16" name="Default Changelist" comment="Commented out TensorBoard params.">
-      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_ckpts.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_LOSS.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_ckpts.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Speaker_Verification.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Speaker_Verification.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Plots/ProjectCode(99_Decay2500_N4_M5_H16_P8)/ProjectCode(99_Decay2500_N4_M5_H16_P8).txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png" beforeDir="false" afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_LOSS.png" beforeDir="false" afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_LOSS.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_ckpts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Plots/011_Decay5000_N4_M5_H64_P32/011_Decay5000_N4_M5_H64_P32_ckpts.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -36,7 +30,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
+            <state relative-caret-position="-740">
               <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -48,15 +42,27 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.py">
+        <entry file="file://$PROJECT_DIR$/utils.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state relative-caret-position="-27">
+              <caret line="112" column="4" selection-start-line="112" selection-start-column="4" selection-end-line="112" selection-end-column="4" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="360">
+              <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="80">
@@ -162,28 +168,6 @@
             <path>
               <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
               <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
-              <item name="Plots" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
-              <item name="Plots" type="462c0819:PsiDirectoryNode" />
-              <item name="ProjectCode(12_Decay2500_N4_M5_H128_P64)" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
-              <item name="Plots" type="462c0819:PsiDirectoryNode" />
-              <item name="ProjectCode(54_Decay5000_N16_M10_H768_P256)" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Speaker_Verification" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Speaker_Verification" type="462c0819:PsiDirectoryNode" />
-              <item name="tisv_model" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -384,7 +368,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1552990994677</updated>
-      <workItem from="1560799820356" duration="68609000" />
+      <workItem from="1560799820356" duration="72103000" />
     </task>
     <task id="LOCAL-00001" summary="Checkpoint before globalization">
       <created>1559033361865</created>
@@ -442,7 +426,14 @@
       <option name="project" value="LOCAL" />
       <updated>1560876783307</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Included last VoxCeleb1+2 trained model plots.">
+      <created>1561115209906</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1561115209906</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -451,7 +442,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68609000" />
+    <option name="totallyTimeSpent" value="72103000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -465,7 +456,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4899329" visible="true" weight="0.24466951" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4899329" visible="true" weight="0.24466951" />
       <window_info id="Favorites" order="1" side_tool="true" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="1" />
@@ -479,8 +470,8 @@
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49626866" weight="0.32827735" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50373137" side_tool="true" weight="0.32827735" />
       <window_info anchor="bottom" id="Inspection Results" order="11" weight="0.32936078" />
-      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49941862" weight="0.3900325" />
-      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49069768" visible="true" weight="0.44853738" />
+      <window_info active="true" anchor="bottom" id="Python Console" order="12" sideWeight="0.49941862" visible="true" weight="0.3900325" />
+      <window_info anchor="bottom" id="Terminal" order="13" sideWeight="0.49069768" weight="0.3575298" />
       <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="SciView" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -526,7 +517,8 @@
     <MESSAGE value="Added two new test type functions:&#10;- averaged_test()&#10;- test_entire_valid_set()&#10;&#10;and their corresponding enablers in utils.py" />
     <MESSAGE value="Improved logging by adding logging functionality to store the ckpts EERs" />
     <MESSAGE value="Commented out TensorBoard params." />
-    <option name="LAST_COMMIT_MESSAGE" value="Commented out TensorBoard params." />
+    <MESSAGE value="Included last VoxCeleb1+2 trained model plots." />
+    <option name="LAST_COMMIT_MESSAGE" value="Included last VoxCeleb1+2 trained model plots." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -758,16 +750,6 @@
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV/ProjectCode(54_Decay5000_N16_M10_H768_P256)_FV.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-295">
-          <caret line="61" column="4" selection-start-line="61" selection-start-column="4" selection-end-line="61" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(44_Decay5000_N8_M10_H768_P256)/ProjectCode(44_Decay5000_N8_M10_H768_P256).png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -806,9 +788,12 @@
     <entry file="file://$PROJECT_DIR$/Plots/010_Decay5000_N4_M5_H16_P8/010_Decay5000_N4_M5_H16_P8_ckpts.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/model.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
+        <state relative-caret-position="-740">
           <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
@@ -818,20 +803,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(54_Decay5000_N16_M10_H768_P256)/ProjectCode(54_Decay5000_N16_M10_H768_P256).png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/Plots/ProjectCode(12_Decay2500_N4_M5_H128_P64)/ProjectCode(12_Decay2500_N4_M5_H128_P64)_ckpts.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
           <caret line="4" selection-start-line="4" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-27">
+          <caret line="112" column="4" selection-start-line="112" selection-start-column="4" selection-end-line="112" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
         </state>
       </provider>
     </entry>
